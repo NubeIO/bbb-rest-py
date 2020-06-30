@@ -1,14 +1,12 @@
 #!flask/bin/python
-
-# REST server
-
 from flask import Flask, jsonify, make_response
+from calibration import ui_scale
 from func import command_to_bool, is_float, analog_in, analog_out, digital_in, digital_out
 from io_types import analogInTypes, analogOutTypes, digitalInTypes, digitalOutTypes
+
 # from tests.test_data import case_list_test_analogue, case_list_test_digital, fake_analogue_data, fake_digital_data
 
 app = Flask(__name__)
-
 
 # BBB GPIO Lib
 import Adafruit_BBIO.GPIO as GPIO
@@ -21,15 +19,10 @@ GPIO.setup("P8_8", GPIO.OUT)
 GPIO.setup("P8_9", GPIO.OUT)
 GPIO.setup("P8_10", GPIO.OUT)
 GPIO.setup("P8_12", GPIO.OUT)
-GPIO.setup("P9_29", GPIO.OUT)
-GPIO.setup("P9_12", GPIO.OUT)
+GPIO.setup("P9_29", GPIO.OUT)  # 'R1'
+GPIO.setup("P9_12", GPIO.OUT)  # 'R2'
 
-# UOs
-# UOs 0 = 0vdc and 100 = 12vdc
-# PWM.start("P9_14", 0, 1000, 1) // for startup
-# PWM.set_duty_cycle("P9_14", 0) //write 0v
-# PWM.set_duty_cycle("P9_14",100) //write 12v
-
+# UOs # UOs 0 = 0vdc and 100 = 12vdc
 PWM.start("P8_13", 0, 1000, 1)  # for startup
 PWM.start("P9_14", 0, 1000, 1)
 PWM.start("P9_21", 0, 1000, 1)
@@ -39,7 +32,7 @@ PWM.start("P9_16", 0, 1000, 1)
 PWM.start("P9_22", 0, 1000, 1)
 
 # DIs
-GPIO.setup("P9_30", GPIO.IN)
+GPIO.setup("P9_30", GPIO.IN)  # DI1
 GPIO.setup("P9_15", GPIO.IN)
 GPIO.setup("P9_31", GPIO.IN)
 GPIO.setup("P9_28", GPIO.IN)
@@ -126,7 +119,7 @@ def read_di(io_num=None):
         return jsonify({'1_state': "unknownType", '2_ioNum': io_num, '3_gpio': gpio, '4_val': 'null',
                         "5_msg": digitalInTypes}), http_error
     else:
-        val = GPIO.input(gpio)   # !! GPIO CALL !!!
+        val = GPIO.input(gpio)  # !! GPIO CALL !!!
         # val = fake_digital_data()  # !!! FOR TESTING !!!
         return jsonify({'1_state': "readOk", '2_ioNum': io_num, '3_gpio': gpio, '4_val': val,
                         '5_msg': 'read value ok'}), http_success
@@ -140,7 +133,7 @@ def read_ai(io_num=None):
         return jsonify({'1_state': "unknownType", '2_ioNum': io_num, '3_gpio': gpio, '4_val': 'null',
                         "5_msg": analogInTypes}), http_error
     else:
-        val = ADC.read(gpio)  # !!! GPIO CALL !!!
+        val = ui_scale(gpio, ADC.read(gpio))  # !!! GPIO CALL !!!
         # val = fake_analogue_data()  # !!! FOR TESTING !!!
         return jsonify({'1_state': "readOk", '2_ioNum': io_num, '3_gpio': gpio, '4_val': val,
                         '5_msg': 'read value ok'}), http_success
@@ -164,7 +157,9 @@ def read_ai_all():
     # case_list = case_list_test_analogue  # !!! FOR TESTING !!!
     case_list = {}
     for key, value in analogInTypes.items():
-        case = {"val": ADC.read(value)}
+        # val = ui_scale(value, ADC.read(value))
+        # case = {"val": ADC.read(value)}
+        case = {"val": ui_scale(value, ADC.read(value))}
         case_list[key] = case
     return jsonify({'1_state': "readOk", '2_ioNum': "all", '3_gpio': "all", '4_val': case_list,
                     '5_msg': 'read UIs ok'}), http_success
