@@ -1,6 +1,6 @@
 #!flask/bin/python
 from flask import Flask, jsonify, make_response
-from calibration import ui_scale
+from calibration import ui_scale, ui_calibration_table
 from func import command_to_bool, is_float, analog_in, analog_out, digital_in, digital_out
 from io_types import analogInTypes, analogOutTypes, digitalInTypes, digitalOutTypes
 
@@ -129,6 +129,8 @@ def read_di(io_num=None):
 @app.route('/api/' + api_ver + '/read/' + ui + '/<io_num>', methods=['GET'])
 def read_ai(io_num=None):
     gpio = analog_in(io_num)
+    min_range = ui_calibration_table(io_num)[0]
+    max_range = ui_calibration_table(io_num).pop()
     if gpio == -1:
         return jsonify({'1_state': "unknownType", '2_ioNum': io_num, '3_gpio': gpio, '4_val': 'null',
                         "5_msg": analogInTypes}), http_error
@@ -136,7 +138,7 @@ def read_ai(io_num=None):
         val = ui_scale(io_num, ADC.read(gpio))  # !!! GPIO CALL !!!
         # val = fake_analogue_data()  # !!! FOR TESTING !!!
         return jsonify({'1_state': "readOk", '2_ioNum': io_num, '3_gpio': gpio, '4_val': val,
-                        '5_msg': 'read value ok'}), http_success
+                        '5_msg': 'read value ok', '6_min_range': min_range, '7_max_range': max_range}), http_success
 
 
 # READ ALL DIs
@@ -156,13 +158,20 @@ def read_di_all():
 def read_ai_all():
     # case_list = case_list_test_analogue  # !!! FOR TESTING !!!
     case_list = {}
+    min_range_array = {}
+    max_range_array = {}
     for key, value in analogInTypes.items():
-        # val = ui_scale(value, ADC.read(value))
-        # case = {"val": ADC.read(value)}
         case = {"val": ui_scale(key, ADC.read(value))}
         case_list[key] = case
+        min_range_array[key] = ui_calibration_table(key)[0]
+        max_range_array[key] = ui_calibration_table(key).pop()
     return jsonify({'1_state': "readOk", '2_ioNum': "all", '3_gpio': "all", '4_val': case_list,
-                    '5_msg': 'read UIs ok'}), http_success
+                    '5_msg': 'read UIs ok', '6_min_range': min_range_array,
+                    '7_max_range': max_range_array}), http_success
+
+
+if __name__ == '__main__':
+    app.run(host='0.0.0.0')
 
 #
 # # READ ALL DOs
@@ -217,7 +226,3 @@ def read_ai_all():
 #         val = result.get("val")
 #         return jsonify({'1_state': "readOk", '2_ioNum': io_num, '3_gpio': gpio, '4_val': val,
 #                         '5_msg': 'read value ok'}), http_success
-
-
-if __name__ == '__main__':
-    app.run(host='0.0.0.0')

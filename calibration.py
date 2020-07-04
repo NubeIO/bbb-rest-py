@@ -11,6 +11,10 @@ rawReads = {
     "UI7": ui7Raw,
 }
 
+## get last value in the calibration array
+def ui_calibration_table(port):
+    port = port.upper() # To uppercase; ie values UI1, UI2, etc.. 
+    return rawReads.get(port, ui1Raw)
 
 # Scaling function
 def ui_scale(port, value):
