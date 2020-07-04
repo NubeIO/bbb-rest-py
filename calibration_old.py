@@ -1,37 +1,27 @@
 from meter_readings import meter_reading
-import json
-
-data_json_file = '/data/rubix-wires/io-calibration.json'
-test_json_file = 'test.json'
-
-with open(data_json_file, 'r') as f:
-    data = f.read()
-
-# parse file
-obj = json.loads(data)
+from ui_readings import ui1Raw, ui2Raw, ui3Raw, ui4Raw, ui5Raw, ui6Raw, ui7Raw
 
 rawReads = {
-    "UI1": obj['UI1'],
-    "UI2": obj['UI2'],
-    "UI3": obj['UI3'],
-    "UI4": obj['UI4'],
-    "UI5": obj['UI5'],
-    "UI6": obj['UI6'],
-    "UI7": obj['UI7'],
+    "UI1": ui1Raw,
+    "UI2": ui2Raw,
+    "UI3": ui3Raw,
+    "UI4": ui4Raw,
+    "UI5": ui5Raw,
+    "UI6": ui6Raw,
+    "UI7": ui7Raw,
 }
 
 
 # get last value in the calibration array
 def ui_calibration_table(port):
     port = port.upper()  # To uppercase; ie values UI1, UI2, etc..
-    return rawReads.get(port, None)
+    return rawReads.get(port, ui1Raw)
 
 
 # Scaling function
 def ui_scale(port, value):
     port = port.upper()  # To uppercase; ie values UI1, UI2, etc..
-    ui_raw = rawReads.get(port, None)  # UI1 default values
-    # ui_raw = rawReads[port]
+    ui_raw = rawReads.get(port, ui1Raw)  # UI1 default values
     if value <= ui_raw[0]:
         # calculate slope at lower bounds
         slope = (meter_reading[0] - meter_reading[1]) / (ui_raw[0] - ui_raw[1])
@@ -51,6 +41,5 @@ def ui_scale(port, value):
                 break
     return value / 10
 
-# point = 'UI4'
-# print(ui_scale(point, 0.5))
-# print(ui_calibration_table(point))
+
+# print(ui_calibration_table('UI1'))

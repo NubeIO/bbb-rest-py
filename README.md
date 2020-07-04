@@ -3,6 +3,20 @@
 python3 app.py 
 ```
 
+### IO calibration
+
+- Use the RAW.py and paste into google sheets and download as a csv
+- Use any text editor to open the csv as csv format as below. (`visual-code` will work)
+- Use https://www.convertcsv.com/csv-to-json.htm and option `CSV To Json Column Array`
+- Add the json file in `/data/rubix-wires/io-calibration.json`
+
+```csv
+UI1, UI2
+0.1, 0.1
+0.2, 0.3
+```
+
+
 ### Installation
 
 - `bash setup.bash`

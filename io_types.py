@@ -8,6 +8,7 @@ analogInTypes = {
     'UI7': 'P9_35',
 }
 
+
 analogOutTypes = {
     'UO1': 'P8_13',
     'UO2': 'P9_14',
