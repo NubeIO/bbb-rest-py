@@ -1,5 +1,5 @@
 from meter_readings import meter_reading
-from ui_readings import ui1Raw, ui2Raw, ui3Raw, ui4Raw, ui5Raw, ui6Raw, ui7Raw
+from ui_readings_old import ui1Raw, ui2Raw, ui3Raw, ui4Raw, ui5Raw, ui6Raw, ui7Raw
 
 rawReads = {
     "UI1": ui1Raw,
