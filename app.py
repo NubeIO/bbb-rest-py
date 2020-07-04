@@ -139,7 +139,7 @@ def read_ai(io_num=None):
                         "5_msg": analogInTypes}), http_error
     else:
         print(io_num)
-        print(gpio)
+        print(ADC.read(gpio))
         val = ui_scale(io_num, ADC.read(gpio))  # !!! GPIO CALL !!!
         print(2222)
         print(val)
