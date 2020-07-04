@@ -131,11 +131,18 @@ def read_ai(io_num=None):
     gpio = analog_in(io_num)
     min_range = ui_calibration_table(io_num)[0]
     max_range = ui_calibration_table(io_num).pop()
+    print(11111)
+    print(min_range)
+    print(max_range)
     if gpio == -1:
         return jsonify({'1_state': "unknownType", '2_ioNum': io_num, '3_gpio': gpio, '4_val': 'null',
                         "5_msg": analogInTypes}), http_error
     else:
+        print(io_num)
+        print(gpio)
         val = ui_scale(io_num, ADC.read(gpio))  # !!! GPIO CALL !!!
+        print(2222)
+        print(val)
         # val = fake_analogue_data()  # !!! FOR TESTING !!!
         return jsonify({'1_state': "readOk", '2_ioNum': io_num, '3_gpio': gpio, '4_val': val,
                         '5_msg': 'read value ok', '6_min_range': min_range, '7_max_range': max_range}), http_success

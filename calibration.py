@@ -45,6 +45,6 @@ def ui_scale(port, value):
                 break
     return value / 10
 
-
-# print(ui_scale('UI1', 0.5))
-# print(ui_calibration_table('UI1'))
+# point = 'UI4'
+# print(ui_scale(point, 0.5))
+# print(ui_calibration_table(point))
