@@ -1,31 +1,25 @@
 from meter_readings import meter_reading
-import json
-data_json_file = '/data/edge-io/io-calibration.json'
-test_json_file = 'test.json'
-with open(test_json_file) as f:
-    data = json.load(f)
+from ui_readings import ui1Raw, ui2Raw, ui3Raw, ui4Raw, ui5Raw, ui6Raw, ui7Raw
 
 rawReads = {
-    "UI1": data['UI1'],
-    "UI2": data['UI2'],
-    "UI3": data['UI3'],
-    "UI4": data['UI4'],
-    "UI5": data['UI5'],
-    "UI6": data['UI6'],
-    "UI7": data['UI7'],
+    "UI1": ui1Raw,
+    "UI2": ui2Raw,
+    "UI3": ui3Raw,
+    "UI4": ui4Raw,
+    "UI5": ui5Raw,
+    "UI6": ui6Raw,
+    "UI7": ui7Raw,
 }
 
-
-# get last value in the calibration array
+## get last value in the calibration array
 def ui_calibration_table(port):
-    port = port.upper()  # To uppercase; ie values UI1, UI2, etc..
-    return rawReads.get(port, None)
-
+    port = port.upper() # To uppercase; ie values UI1, UI2, etc.. 
+    return rawReads.get(port, ui1Raw)
 
 # Scaling function
 def ui_scale(port, value):
-    port = port.upper()  # To uppercase; ie values UI1, UI2, etc..
-    ui_raw = rawReads.get(port, None)  # UI1 default values
+    port = port.upper() # To uppercase; ie values UI1, UI2, etc.. 
+    ui_raw = rawReads.get(port, ui1Raw)  # UI1 default values
     if value <= ui_raw[0]:
         # calculate slope at lower bounds
         slope = (meter_reading[0] - meter_reading[1]) / (ui_raw[0] - ui_raw[1])
@@ -43,8 +37,7 @@ def ui_scale(port, value):
                 slope = (meter_reading[i] - meter_reading[i + 1]) / (ui_raw[i] - ui_raw[i + 1])
                 value = meter_reading[i] + ((value - ui_raw[i]) * slope)
                 break
-    return value / 10
+    return value/10
 
 
-# print(ui_scale('UI1', 0.5))
-# print(ui_calibration_table('UI1'))
+print(ui_calibration_table('UI1'))
