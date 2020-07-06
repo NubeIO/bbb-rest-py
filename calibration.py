@@ -18,12 +18,14 @@ rawReads = {
     "UI5": obj['UI5'],
     "UI6": obj['UI6'],
     "UI7": obj['UI7'],
+    # "UI1_ma": obj['UI1_ma'],
 }
 
 
 # get last value in the calibration array
 def ui_calibration_table(port):
     port = port.upper()  # To uppercase; ie values UI1, UI2, etc..
+    port = port+'_ma'
     return rawReads.get(port, None)
 
 
@@ -51,6 +53,6 @@ def ui_scale(port, value):
                 break
     return value / 10
 
-# point = 'UI4'
+point = 'UI1'
 # print(ui_scale(point, 0.5))
-# print(ui_calibration_table(point))
+print(ui_calibration_table(point))
