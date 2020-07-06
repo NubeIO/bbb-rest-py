@@ -11,9 +11,10 @@ python3 app.py
 - Add the json file in `/data/rubix-wires/io-calibration.json`
 
 ```csv
-UI1, UI2
-0.1, 0.1
-0.2, 0.3
+UI1, UI2, UI1_MA
+0.1, 0.1, 1
+0.2, 0.3, 10
+0.4, 0.4, null
 ```
 
 
