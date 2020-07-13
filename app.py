@@ -21,6 +21,7 @@ GPIO.setup("P8_10", GPIO.OUT)
 GPIO.setup("P8_12", GPIO.OUT)
 GPIO.setup("P9_29", GPIO.OUT)  # 'R1'
 GPIO.setup("P9_12", GPIO.OUT)  # 'R2'
+GPIO.setup("P9_41", GPIO.OUT)  # 'LoRa Connect Reset'
 
 # UOs # UOs 0 = 0vdc and 100 = 12vdc
 PWM.start("P8_13", 0, 1000, 1)  # for startup
