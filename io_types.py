@@ -36,6 +36,7 @@ digitalOutTypes = {
     'DO4': 'P8_10',
     'DO5': 'P8_12',
     'R1': 'P9_29',
-    'R2': 'P9_12',
+    'R2': 'P9_12', 
+    'LC': 'P9_41', # lora connect reset
 }
 
