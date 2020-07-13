@@ -107,9 +107,9 @@ on/closed = around 0.1 vdc
 ### read all
 ```
 // read all DIs
-http://0.0.0.0:5000/api/v1.0/read/all/di
+http://0.0.0.0:5000/api/1.1/read/all/di
 // read all AIs
-http://0.0.0.0:5000/api/v1.0/read/all/ai
+http://0.0.0.0:5000/api/1.1/read/all/ai
 ```
 
 #### UOs
@@ -120,7 +120,7 @@ UOs 0 = 12vdc and 100 = 0vdc (Yes its backwards)
 <io_num>/<val>/<pri>
 uo/uo1/22/16
 the priority (pri) is not supported yet but it's there for future use if needed
-http://0.0.0.0:5000/api/v1.0/write/uo/uo1/100/16
+http://0.0.0.0:5000/api/1.1/write/uo/uo1/100/16
 // this returns the values that was stored in the DB (So not reading the actual pin value)
 ```
 
@@ -131,7 +131,7 @@ https://learn.adafruit.com/setting-up-io-python-library-on-beaglebone-black/gpio
 /<io_num>/<val>/<pri>
 the priority (pri) is not supported yet but it's there for future use if needed
 DOs true for high false for low
-http://0.0.0.0:5000/api/v1.0/write/do/do1/true/16
+http://0.0.0.0:5000/api/1.1/write/do/do1/true/16
 ```
 
 #### UIs
@@ -139,7 +139,7 @@ https://learn.adafruit.com/setting-up-io-python-library-on-beaglebone-black/adc
 
 ```
 UIs will return a float between 0 and 1
-http://0.0.0.0:5000/api/v1.0/read/ui/ui1
+http://0.0.0.0:5000/api/1.1/read/ui/ui1
 x
 ```
 
@@ -148,7 +148,7 @@ https://learn.adafruit.com/setting-up-io-python-library-on-beaglebone-black/gpio
 
 ```
 DIs will return a int either 0 and 1 (0 is on 1 is off)
-http://0.0.0.0:5000/api/v1.0/read/di/di1
+http://0.0.0.0:5000/api/1.1/read/di/di1
 ```
 ## Cloning eMMc image to microSD card as a Flasher.
 * Boot off beaglebone on eMMc you wish to clone.
