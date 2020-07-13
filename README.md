@@ -88,6 +88,16 @@ sudo iptables -D INPUT -p tcp --dport 5000 -j DROP
 
 ### API for the GPIO
 
+### LoRa Connect Reset
+
+This api will let you reset the power on the lora connect
+
+```
+// write the lora connect off
+localhost:5000/api/1.1/write/do/lc/0/16
+
+
+
 ```
 IO_TYPES
 ui, uo, di, do
