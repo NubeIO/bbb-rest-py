@@ -1,0 +1,6 @@
+[Unit]
+Description=Enable UART pins
+
+[Service]
+Type=simple
+ExecStart=/home/debian/bonescript-api/systemd/nubeio-enable-uart-pins.sh

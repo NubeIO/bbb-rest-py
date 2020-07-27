@@ -1,0 +1,9 @@
+[Unit]
+Description=Enables UART pins after three minutes
+
+[Timer]
+OnBootSec=3min
+Unit=nubeio-enable-uart-pins.service
+
+[Install]
+WantedBy=multi-user.target
