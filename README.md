@@ -29,6 +29,7 @@ https://learn.adafruit.com/setting-up-io-python-library-on-beaglebone-black/inst
 - `sudo apt-get update`
 - `sudo apt-get install build-essential python-dev python-setuptools python-pip python-smbus python3-pip virtualenv -y`
 - `pip install -U pip setuptools wheel`
+- `cd bb-py-rest`
 - `rm -r venv` // remove virtual env, if exist
 - `virtualenv -p python3 venv` // creating virtual env with python3
 - `source /home/debian/bbb-py-rest/venv/bin/activate` // activating virtual env
