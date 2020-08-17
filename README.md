@@ -38,16 +38,30 @@ https://learn.adafruit.com/setting-up-io-python-library-on-beaglebone-black/inst
 
 ### Systemd Service
 
-- `sudo cp bbio.service /etc/systemd/system/`
-- `sudo systemctl daemon-reload`
-- `sudo systemctl enable bbio.service`
-- `sudo systemctl start bbio.service`
+##### See status
+```
+sudo systemctl status nubeio-bbio.service
+sudo systemctl status nubeio-enable-uart-pins.timer
+```
 
-###### Other Systemd Commands
+##### Delete UART service files
+```
+sudo rm /lib/systemd/system/nubeio-enable-uart-pins.service
+sudo rm /lib/systemd/system/nubeio-enable-uart-pins.timer
+```
 
-- `sudo systemctl stop bbio.service`
-- `sudo systemctl status bbio.service`
-- `sudo journalctl -f -u bbio.service`
+##### Disable UART service
+```
+sudo systemctl disable nubeio-enable-uart-pins.timer
+```
+
+##### Other Systemd Commands
+
+- `sudo systemctl stop nubeio-bbio.service`
+- `sudo systemctl status nubeio-bbio.service`
+- `sudo journalctl -f -u nubeio-bbio.service`
+
+Note: Version 1.4 of the Nube iO Edge Controller does not need the UART pins enabled and doing so conflicts with the pins for R1. 
 
 ### For testing
 
@@ -83,9 +97,7 @@ https://upcloud.com/community/tutorials/configure-iptables-centos/
 
 // to remove a rule
 sudo iptables -D INPUT -p tcp --dport 5000 -j DROP
-
 ```
-
 
 ### API for the GPIO
 
@@ -96,9 +108,6 @@ This api will let you reset the power on the lora connect
 ```
 // write the lora connect off
 localhost:5000/api/1.1/write/do/lc/0/16
-
-
-
 ```
 IO_TYPES
 ui, uo, di, do
@@ -109,11 +118,9 @@ ui, uo, di, do
 /read/all/IO_TYPE
 
 ```
-
 #### Read a UI as a DI (jumper needs to be set to 10K)
 off/open = around 0.9 vdc
 on/closed = around 0.1 vdc
-
 
 ### read all
 ```
@@ -122,10 +129,8 @@ http://0.0.0.0:5000/api/1.1/read/all/di
 // read all AIs
 http://0.0.0.0:5000/api/1.1/read/all/ai
 ```
-
 #### UOs
 https://learn.adafruit.com/setting-up-io-python-library-on-beaglebone-black/pwm
-
 ```
 UOs 0 = 12vdc and 100 = 0vdc (Yes its backwards)
 <io_num>/<val>/<pri>
@@ -134,29 +139,22 @@ the priority (pri) is not supported yet but it's there for future use if needed
 http://0.0.0.0:5000/api/1.1/write/uo/uo1/100/16
 // this returns the values that was stored in the DB (So not reading the actual pin value)
 ```
-
 #### DOs
 https://learn.adafruit.com/setting-up-io-python-library-on-beaglebone-black/gpio
-
 ```
 /<io_num>/<val>/<pri>
 the priority (pri) is not supported yet but it's there for future use if needed
 DOs true for high false for low
 http://0.0.0.0:5000/api/1.1/write/do/do1/true/16
 ```
-
 #### UIs
 https://learn.adafruit.com/setting-up-io-python-library-on-beaglebone-black/adc
-
 ```
 UIs will return a float between 0 and 1
 http://0.0.0.0:5000/api/1.1/read/ui/ui1
-x
 ```
-
 #### DIs
 https://learn.adafruit.com/setting-up-io-python-library-on-beaglebone-black/gpio
-
 ```
 DIs will return a int either 0 and 1 (0 is on 1 is off)
 http://0.0.0.0:5000/api/1.1/read/di/di1
@@ -170,56 +168,3 @@ cd /opt/scripts/tools/eMMC
 sudo ./beaglebone-black-make-microSD-flasher-from-eMMC.sh
 ```
 * Once finish, reboot and boot off the beaglebone using the microSD card as an image flasher
-
-
-# Add bonescript api and enable UART pins as services to start after boot
-## Copy service files to /lib/systemd/system/
-
-```
-sudo cp nubeio-bonescript-api.service /lib/systemd/system/
-sudo cp nubeio-enable-uart-pins.service /lib/systemd/system/
-sudo cp nubeio-enable-uart-pins.timer /lib/systemd/system/
-```
-
-## Create symlink for both services
-
-```
-sudo ln -s /lib/systemd/system/nubeio-bonescript-api.service /etc/systemd/system/multi-user.target.wants/nubeio-bonescript-api.service
-sudo ln -s /lib/systemd/system/nubeio-enable-uart-pins.timer /etc/systemd/system/multi-user.target.wants/nubeio-enable-uart-pins.timer
-```
-
-## Enable the new systemd services
-```
-sudo systemctl daemon-reload
-sudo systemctl enable nubeio-bonescript-api.service
-sudo systemctl enable nubeio-enable-uart-pins.timer
-```
-
-## Reboot and test
-```
-sudo reboot now
-sudo systemctl status nubeio-bonescript-api.service
-sudo systemctl status nubeio-enable-uart-pins.timer
-```
-
-# Disable UART pin service
-
-Version 1.4 of the Nube iO Edge Controller does not need the UART pins enabled and doing so conflicts with the pins for R1. 
-
-## Delete service files at /lib/systemd/system/
-```
-sudo rm /lib/systemd/system/nubeio-enable-uart-pins.service
-sudo rm /lib/systemd/system/nubeio-enable-uart-pins.timer
-```
-
-## Disable the systemd services
-```
-sudo systemctl daemon-reload
-sudo systemctl disable nubeio-enable-uart-pins.timer
-```
-
-## Reboot and test
-```
-sudo reboot now
-sudo systemctl status nubeio-enable-uart-pins.timer
-```
