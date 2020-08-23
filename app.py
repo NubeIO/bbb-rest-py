@@ -46,6 +46,7 @@ ADC.setup()
 
 # API stuff
 api_ver = '1.1'  # change version number as needed
+api_port = 5000 # API PORT NUMBER
 uo = 'uo'
 ui = 'ui'
 do = 'do'
@@ -172,7 +173,7 @@ def read_ai_all():
 
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0')
+    app.run(host='0.0.0.0', port = api_port)
 
 #
 # # READ ALL DOs
