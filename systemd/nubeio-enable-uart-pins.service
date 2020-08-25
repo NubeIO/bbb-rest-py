@@ -3,4 +3,4 @@ Description=Enable UART pins
 
 [Service]
 Type=simple
-ExecStart=/home/debian/bonescript-api/systemd/nubeio-enable-uart-pins.sh
+ExecStart=/home/debian/bbb-py-rest/systemd/nubeio-enable-uart-pins.sh
