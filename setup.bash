@@ -11,6 +11,6 @@ sudo cp systemd/nubeio-bbio.service /etc/systemd/system/
 sudo cp systemd/nubeio-enable-uart-pins.service /etc/systemd/system/
 sudo cp systemd/nubeio-enable-uart-pins.timer /etc/systemd/system/
 sudo systemctl daemon-reload
-sudo systemctl enable bbio.service
+sudo systemctl enable nubeio-bbio.service
 sudo systemctl enable nubeio-enable-uart-pins.timer
 sudo systemctl start bbio.service
