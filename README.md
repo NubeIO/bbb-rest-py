@@ -168,3 +168,60 @@ cd /opt/scripts/tools/eMMC
 sudo ./beaglebone-black-make-microSD-flasher-from-eMMC.sh
 ```
 * Once finish, reboot and boot off the beaglebone using the microSD card as an image flasher
+
+
+## install wires and bbb-rest
+
+
+```
+sudo systemctl stop rsyslog.service
+sudo systemctl disable rsyslog.service
+sudo systemctl stop syslog.socket
+sudo systemctl disable syslog.socket
+sudo rm -r *
+git clone --depth 1 https://github.com/NubeIO/bash-scripts
+sudo bash remove-services.sh debian
+Download bbb-rest
+wget https://github.com/NubeIO/bbb-py-rest/archive/v1.0.2.zip
+unzip v1.0.2.zip 
+mv bbb-py-rest-1.0.2 bbb-py-rest
+cd bbb-py-rest
+bash setup.bash
+sudo mkdir /data
+sudo mkdir /data/rubix-wires
+sudo chown -R $USER:$USER /data
+cd /data/rubix-wires/
+mkdir config
+sudo nano /data/rubix-wires/config/.env
+# edit the .env file
+#--------------Edge 28 config-----------------------------------------------------
+PORT=1313
+SECRET_KEY=__SECRET_KEY__
+EDGE_28_BASEURL=localhost
+EDGE_28_PORT=5000
+EDGE_28_API_VER=1.1
+sudo nano /data/rubix-wires/io-calibration.json
+{
+    "UI1":[0.01,0.02,0.04,0.07,0.1,0.2,0.3,0.4,0.6,0.8,1.0],
+    "UI2":[0.01,0.02,0.04,0.07,0.1,0.2,0.3,0.4,0.6,0.8,1.0],
+    "UI3":[0.01,0.02,0.04,0.07,0.1,0.2,0.3,0.4,0.6,0.8,1.0],
+    "UI4":[0.01,0.02,0.04,0.07,0.1,0.2,0.3,0.4,0.6,0.8,1.0],
+    "UI5":[0.01,0.02,0.04,0.07,0.1,0.2,0.3,0.4,0.6,0.8,1.0],
+    "UI6":[0.01,0.02,0.04,0.07,0.1,0.2,0.3,0.4,0.6,0.8,1.0],
+    "UI7":[0.01,0.02,0.04,0.07,0.1,0.2,0.3,0.4,0.6,0.8,1.0],
+    "UI1_MA":[0,1,null,null,null,null,null,null,null,null,null],
+    "UI2_MA":[0,1,null,null,null,null,null,null,null,null,null],
+    "UI3_MA":[0,1,null,null,null,null,null,null,null,null,null],
+    "UI4_MA":[0,1,null,null,null,null,null,null,null,null,null],
+    "UI5_MA":[0,1,null,null,null,null,null,null,null,null,null],
+    "UI6_MA":[0,1,null,null,null,null,null,null,null,null,null],
+    "UI7_MA":[0,1,null,null,null,null,null,null,null,null,null]
+}
+wget https://github.com/NubeIO/wires-builds/archive/v2.0.7.zip
+unzip v2.0.7.zip
+mv wires-builds-2.0.7 wires-builds
+cd wires-builds/rubix-wires/systemd
+sudo bash script.bash install -s=nubeio-rubix-wires.service -u=debian --working-dir=/home/debian/wires-builds/rubix-wires -g=/data/rubix-wires -d=data -c=config -p=1313
+```
+
+
