@@ -217,9 +217,9 @@ sudo nano /data/rubix-wires/io-calibration.json
     "UI6_MA":[0,1,null,null,null,null,null,null,null,null,null],
     "UI7_MA":[0,1,null,null,null,null,null,null,null,null,null]
 }
-wget https://github.com/NubeIO/wires-builds/archive/v2.0.7.zip
-unzip v2.0.7.zip
-mv wires-builds-2.0.7 wires-builds
+wget https://github.com/NubeIO/wires-builds/archive/refs/tags/v2.1.0.zip
+unzip v2.1.0.zip
+mv wires-builds-2.1.0 wires-builds
 cd wires-builds/rubix-wires/systemd
 sudo bash script.bash install -s=nubeio-rubix-wires.service -u=debian --working-dir=/home/debian/wires-builds/rubix-wires -g=/data/rubix-wires -d=data -c=config -p=1313
 ```
