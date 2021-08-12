@@ -235,6 +235,33 @@ wget https://github.com/NubeIO/wires-builds/archive/refs/tags/v$WIRES.zip  \
 ```
 
 
+    
+# LoRa Connect
+```
+stty -F /dev/ttyS1 38400 -cstopb -parenb && cat /dev/ttyS1
+```
 
+
+```
+var b = require('bonescript');
+b.pinMode('P9_41', b.OUTPUT);
+
+
+function gpioLow() {
+b.digitalWrite('P9_41', b.LOW);
+console.log('Reseting LoRa Module. Set pin to LOW');
+}
+
+function gpioHigh() {
+b.digitalWrite('P9_41', b.HIGH);
+console.log('Reset LoRa Module. Set pin back to High');
+}
+
+gpioLow();
+
+// wait after 3 seconds to set the pin back to high
+setTimeout(gpioHigh, 5000);
+
+```
 
 
