@@ -7,6 +7,8 @@ virtualenv -p python3 venv
 source venv/bin/activate
 pip3 install -r requirements.txt
 deactivate
+mkdir -p /data/rubix-wires
+cp io-calibration.json /data/rubix-wires/
 sudo cp systemd/nubeio-bbio.service /etc/systemd/system/
 sudo cp systemd/nubeio-enable-uart-pins.service /etc/systemd/system/
 sudo cp systemd/nubeio-enable-uart-pins.timer /etc/systemd/system/
