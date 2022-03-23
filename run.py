@@ -1,12 +1,17 @@
 #!flask/bin/python
+
 from flask import Flask, jsonify, make_response
-from calibration import ui_scale, ui_calibration_table
-from func import command_to_bool, is_float, analog_in, analog_out, digital_in, digital_out
-from io_types import analogInTypes, analogOutTypes, digitalInTypes, digitalOutTypes
+from src.calibration import ui_scale, ui_calibration_table
+from src.utils.config_uart_pin import config_uart_pin
+from src.utils.func import command_to_bool, is_float, analog_in, analog_out, digital_in, digital_out
+from src.constants.io_types import analogInTypes, analogOutTypes, digitalInTypes, digitalOutTypes
 
 # from tests.test_data import case_list_test_analogue, case_list_test_digital, fake_analogue_data, fake_digital_data
 
 app = Flask(__name__)
+
+# config uart pins
+config_uart_pin()
 
 # BBB GPIO Lib
 import Adafruit_BBIO.GPIO as GPIO

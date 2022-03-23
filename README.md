@@ -1,6 +1,52 @@
-### To start
+# bbb-py-rest
+
+## Running in development
+- Use [`poetry`](https://github.com/python-poetry/poetry) to manage dependencies
+- Simple script to install
+
+    ```bash
+    ./setup.sh
+    ```
+
+- Join `venv`
+
+    ```
+    poetry shell
+    ```
+
+- Build local binary
+
+    ```bash
+    poetry run pyinstaller run.py -n bbb-py-rest --clean --onefile --add-data pyproject.toml:.
+    ```
+
+  The output is: `dist/bbb-py-rest`
+  
+## Docker build
+
+### Build
+
+```bash
+./docker.sh
 ```
-python3 app.py 
+
+The output image is: `bbb-py-rest:dev`
+
+### Run
+
+```bash
+docker volume create bbb-py-rest
+docker run --rm -it -p 2020:2020 -v bbb-py-rest-data:/data --name bbb-py-rest bbb-py-rest:dev
+```
+
+## Deploy on Production
+
+- Download release artifact
+- Review help and start
+
+```bash
+$ bbb-py-rest
+Usage: bbb-py-rest
 ```
 
 ### IO calibration
@@ -16,50 +62,6 @@ UI1, UI2, UI1_MA
 0.2, 0.3, 10
 0.4, 0.4, null
 ```
-
-
-### Installation
-
-- `bash setup.bash`
-
-#### In details
-
-https://learn.adafruit.com/setting-up-io-python-library-on-beaglebone-black/installation-on-ubuntu
-
-- `sudo apt-get update`
-- `sudo apt-get install build-essential python-dev python-setuptools python-pip python-smbus python3-pip virtualenv -y`
-- `pip install -U pip setuptools wheel`
-- `cd bb-py-rest`
-- `rm -r venv` // remove virtual env, if exist
-- `virtualenv -p python3 venv` // creating virtual env with python3
-- `source /home/debian/bbb-py-rest/venv/bin/activate` // activating virtual env
-- `pip3 install -r requirements.txt` // installing the packages for this project
-- `deactivate` // deactivate current environment
-
-### Systemd Service
-
-##### See status
-```
-sudo systemctl status nubeio-bbio.service
-sudo systemctl status nubeio-enable-uart-pins.timer
-```
-
-##### Delete UART service files
-```
-sudo rm /lib/systemd/system/nubeio-enable-uart-pins.service
-sudo rm /lib/systemd/system/nubeio-enable-uart-pins.timer
-```
-
-##### Disable UART service
-```
-sudo systemctl disable nubeio-enable-uart-pins.timer
-```
-
-##### Other Systemd Commands
-
-- `sudo systemctl stop nubeio-bbio.service`
-- `sudo systemctl status nubeio-bbio.service`
-- `sudo journalctl -f -u nubeio-bbio.service`
 
 Note: Version 1.4 of the Nube iO Edge Controller does not need the UART pins enabled and doing so conflicts with the pins for R1. 
 

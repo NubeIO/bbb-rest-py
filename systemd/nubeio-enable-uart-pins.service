@@ -1,6 +1,0 @@
-[Unit]
-Description=Enable UART pins
-
-[Service]
-Type=simple
-ExecStart=/home/debian/bbb-py-rest/systemd/nubeio-enable-uart-pins.sh

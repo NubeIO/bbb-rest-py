@@ -1,6 +1,8 @@
 import Adafruit_BBIO.ADC as ADC
+
 ADC.setup()
 from time import sleep
+
 ui1 = "P9_39"
 ui2 = "P9_40"
 ui3 = "P9_37"
