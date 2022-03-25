@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "bbb-py-rest"
-version = "1.0.0"
+version = "0.0.1"
 description = "Rubix Beaglebond Black App"
 authors = ["NubeDev <aidan@enviroservices.com.au>"]
 
