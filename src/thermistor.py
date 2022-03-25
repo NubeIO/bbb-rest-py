@@ -1,4 +1,4 @@
-from thermistor_const import table_10ktype2
+from src.constants.thermistor_const import table_10ktype2
 
 
 # function converting resistor value to temperature
