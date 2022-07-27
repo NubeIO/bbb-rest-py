@@ -14,8 +14,8 @@ on:
       - 'v*'
 
 env:
-  APP_NAME: nubeio-rubix-app-bbb-rest-py
-  GHCR_IMAGE: ghcr.io/nubeio/nubeio-rubix-app-bbb-rest-py
+  APP_NAME: nubeio-rubix-app-bbb-py-rest
+  GHCR_IMAGE: ghcr.io/nubeio/nubeio-rubix-app-bbb-py-rest
   PLATFORMS: linux/amd64,linux/arm/v7
 
 jobs:
