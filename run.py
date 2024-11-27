@@ -11,13 +11,16 @@ from src.constants.io_types import analogInTypes, analogOutTypes, digitalInTypes
 app = Flask(__name__)
 
 # config uart pins
+print("Configuring UART Pins")
 config_uart_pin()
+print("UART Pins configured successfully")
 
 # BBB GPIO Lib
 import Adafruit_BBIO.GPIO as GPIO
 import Adafruit_BBIO.PWM as PWM
 import Adafruit_BBIO.ADC as ADC
 
+print("Setting up PINS")
 # DOs
 GPIO.setup("P8_7", GPIO.OUT)
 GPIO.setup("P8_8", GPIO.OUT)
@@ -49,9 +52,11 @@ GPIO.setup("P9_27", GPIO.IN)
 # AIs
 ADC.setup()
 
+print("PINS setup is successfully completed")
+
 # API stuff
 api_ver = '1.1'  # change version number as needed
-api_port = 5000 # API PORT NUMBER
+api_port = 5000  # API PORT NUMBER
 uo = 'uo'
 ui = 'ui'
 do = 'do'
@@ -65,6 +70,12 @@ http_success = 201
 @app.errorhandler(404)
 def not_found(error):
     return make_response(jsonify({'error': 'try again :('}), http_error)
+
+
+@app.errorhandler(Exception)
+def handle_exception(e):
+    logging.exception("Unhandled exception occurred")
+    return jsonify({'error': str(e)}), 500
 
 
 # index page
@@ -136,13 +147,20 @@ def read_di(io_num=None):
 @app.route('/api/' + api_ver + '/read/' + ui + '/<io_num>', methods=['GET'])
 def read_ai(io_num=None):
     gpio = analog_in(io_num)
+    print("gpio", gpio)
     min_range = ui_calibration_table(io_num)[0]
     max_range = ui_calibration_table(io_num)[1]
+    print("min_range", min_range)
+    print("max_range", max_range)
     if gpio == -1:
         return jsonify({'1_state': "unknownType", '2_ioNum': io_num, '3_gpio': gpio, '4_val': 'null',
                         "5_msg": analogInTypes}), http_error
     else:
+        print("ADC", ADC)
+        print("ADC.read(gpio)", ADC.read(gpio))
+        print("Check...")
         val = ui_scale(io_num, ADC.read(gpio))  # !!! GPIO CALL !!!
+        print("val", val)
         # val = fake_analogue_data()  # !!! FOR TESTING !!!
         return jsonify({'1_state': "readOk", '2_ioNum': io_num, '3_gpio': gpio, '4_val': val,
                         '5_msg': 'read value ok', '6_min_range': min_range, '7_max_range': max_range}), http_success
@@ -178,7 +196,7 @@ def read_ai_all():
 
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port = api_port)
+    app.run(host='0.0.0.0', port=api_port, debug=True)
 
 #
 # # READ ALL DOs
