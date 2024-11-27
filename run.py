@@ -11,13 +11,16 @@ from src.constants.io_types import analogInTypes, analogOutTypes, digitalInTypes
 app = Flask(__name__)
 
 # config uart pins
+print("Configuring UART Pins")
 config_uart_pin()
+print("UART Pins configured successfully")
 
 # BBB GPIO Lib
 import Adafruit_BBIO.GPIO as GPIO
 import Adafruit_BBIO.PWM as PWM
 import Adafruit_BBIO.ADC as ADC
 
+print("Setting up PINS")
 # DOs
 GPIO.setup("P8_7", GPIO.OUT)
 GPIO.setup("P8_8", GPIO.OUT)
@@ -49,9 +52,11 @@ GPIO.setup("P9_27", GPIO.IN)
 # AIs
 ADC.setup()
 
+print("PINS setup is successfully completed")
+
 # API stuff
 api_ver = '1.1'  # change version number as needed
-api_port = 5000 # API PORT NUMBER
+api_port = 5000  # API PORT NUMBER
 uo = 'uo'
 ui = 'ui'
 do = 'do'
@@ -65,6 +70,12 @@ http_success = 201
 @app.errorhandler(404)
 def not_found(error):
     return make_response(jsonify({'error': 'try again :('}), http_error)
+
+
+@app.errorhandler(Exception)
+def handle_exception(e):
+    logging.exception("Unhandled exception occurred")
+    return jsonify({'error': str(e)}), 500
 
 
 # index page
@@ -178,7 +189,7 @@ def read_ai_all():
 
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port = api_port, debug=True)
+    app.run(host='0.0.0.0', port=api_port, debug=True)
 
 #
 # # READ ALL DOs
