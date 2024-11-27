@@ -178,7 +178,7 @@ def read_ai_all():
 
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port = api_port)
+    app.run(host='0.0.0.0', port = api_port, debug=True)
 
 #
 # # READ ALL DOs
